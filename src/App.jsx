@@ -1,59 +1,20 @@
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import BookList from './components/BookList';
 import BookCreate from './components/BookCreate';
-import axios from 'axios';
+import useBookContext from './hooks/use-book-context';
 
 function App() {
-  const [books, setBooks] = useState([]);
-
-  //get All Books
-
-  const fetchBooks = async () => {
-    const response = await axios.get('http://localhost:5000/books');
-    setBooks(response.data);
-  };
+  const { fetchBooks } = useBookContext();
 
   useEffect(() => {
     fetchBooks();
   }, []);
 
-  const editBookById = async (id, newTitle) => {
-    const response = await axios.put(`http://localhost:5000/books/${id}`, {
-      title: newTitle,
-    });
-
-    const updatedBooks = books.map((book) => {
-      if (book.id === id) {
-        return { ...book, ...response.data };
-      }
-
-      return book;
-    });
-
-    setBooks(updatedBooks);
-  };
-
-  const deleteBookById = async (id) => {
-    await axios.delete(`http://localhost:5000/books/${id}`);
-
-    const updatedBooks = books.filter((book) => {
-      return book.id !== id;
-    });
-
-    setBooks(updatedBooks);
-  };
-
-  const createBook = async (title) => {
-    const response = await axios.post('http://localhost:5000/books', { title });
-    const updatedBooks = [...books, response.data];
-    setBooks(updatedBooks);
-  };
-
   return (
     <div className="app">
       <h1>Reading List</h1>
-      <BookList onEdit={editBookById} books={books} onDelete={deleteBookById} />
-      <BookCreate onCreate={createBook} />
+      <BookList />
+      <BookCreate />
     </div>
   );
 }
