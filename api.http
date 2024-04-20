@@ -1,0 +1,25 @@
+#Get all books
+GET http://localhost:5000/books HTTP/1.5
+Content-Type: application/json
+#Create a Book
+###
+POST http://localhost:5000/books HTTP/1.5
+Content-Type: application/json
+
+{
+  "id": 2,
+  "title": "Harry Potter22"
+}
+
+#Edit a Book
+###
+PUT http://localhost:5000/books/1 HTTP/1.5
+Content-Type: application/json
+
+{
+  "title": "DArk Tower"
+}
+
+#Delete a book
+### 
+DELETE http://localhost:5000/books/1 HTTP/1.5
